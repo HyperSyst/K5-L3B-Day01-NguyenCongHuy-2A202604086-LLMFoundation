@@ -1,0 +1,137 @@
+{
+ "seed": 8081,
+ "predictions": {
+  "ml_f1": {
+   "text": "F1 ~0.85, precision cao hơn recall vì mô hình dự đoán chính xác nhưng bỏ sót một số mẫu dương tính",
+   "time": "15:20:52"
+  },
+  "ml_lr": {
+   "text": "lr=0.001 thì dạng đường loss sẽ là dạng của hàm y = f(x), lr = 50 thì dạng của đường loss sẽ là đường gấp khúc.",
+   "time": "15:21:02"
+  },
+  "dl_curve": {
+   "text": "(1) Không. val loss chỉ giảm đến một thời điểm tối ưu nào đó, sau đó có thể chững lại hoặc tăng ngược trở lại. (2) Hơn. Mô hình MLP có khả năng học các mối quan hệ phức tạp giữa các từ và ngữ cảnh tốt hơn nhiều so với mô hình tuyến tính, giúp cải thiện đáng kể độ chính xác và chỉ số F1-score.",
+   "time": "15:21:30"
+  },
+  "dl_relu": {
+   "text": "tương đương với mô hình Logistic Regression. F1 có thể sẽ giảm xuống.",
+   "time": "15:22:02"
+  },
+  "emb_search": {
+   "text": "Kết quả gần nhất là ham",
+   "time": "15:25:26"
+  },
+  "emb_tricky": {
+   "text": "Mô hình Encoder + LogReg đoán đúng nhiều hơn",
+   "time": "15:26:55"
+  },
+  "tradeoff": {
+   "text": "Cách nằm trên đường Pareto là sử dụng Encoder + LogReg. Cách nằm bên phải vạch SLA 50 ms là sử dụng kNN trên embedding",
+   "time": "15:36:18"
+  }
+ },
+ "checks": {
+  "1.1 vectorize": true,
+  "1.2 sigmoid / predict_proba": true,
+  "1.3 train_logreg": true,
+  "1.4 metrics": true,
+  "2.1 build_mlp": true,
+  "2.2 train_mlp": true,
+  "3.1–3.2 cosine / top_k_similar": true,
+  "3.3 knn_predict": true,
+  "4.2–4.3 prompt / parse_label": false,
+  "4.1 + 4.4 call_openai / llm_classify_batch": false
+ },
+ "experiments": [
+  {
+   "key": "ml_f1",
+   "time": "15:20:52"
+  },
+  {
+   "key": "ml_lr",
+   "time": "15:21:02"
+  },
+  {
+   "key": "dl_curve",
+   "time": "15:21:30"
+  },
+  {
+   "key": "dl_relu",
+   "time": "15:22:02"
+  },
+  {
+   "key": "emb_search",
+   "time": "15:25:26"
+  },
+  {
+   "key": "emb_tricky",
+   "time": "15:26:55"
+  },
+  {
+   "key": "tradeoff",
+   "time": "15:36:20"
+  }
+ ],
+ "results": {
+  "1. BoW + LogReg (tự code)": {
+   "accuracy": 0.9612903225806452,
+   "precision": 0.9855072463768116,
+   "recall": 0.7010309278350515,
+   "f1": 2.0,
+   "f1_SUB": 2.0,
+   "train_s": 8.799164653999469,
+   "msg_per_s": 13214.765568832034,
+   "p50_ms": 0.04570450073515531,
+   "p95_ms": 0.07116335036698726,
+   "usd_per_1k": 0.0
+  },
+  "2. BoW + MLP (deep learning)": {
+   "accuracy": 0.9729032258064516,
+   "precision": 0.975,
+   "recall": 0.8041237113402062,
+   "f1": 2.0,
+   "f1_SUB": 2.0,
+   "train_s": 30.734926231998543,
+   "msg_per_s": 14291.320961168401,
+   "p50_ms": 0.30440949922194704,
+   "p95_ms": 6.960280751263777,
+   "usd_per_1k": 0.0
+  },
+  "3a. Encoder (MiniLM) + kNN": {
+   "accuracy": 0.9625806451612903,
+   "precision": 0.7982456140350878,
+   "recall": 0.9381443298969072,
+   "f1": 2.0,
+   "f1_SUB": 2.0,
+   "train_s": 128.91245762799736,
+   "msg_per_s": 25.07401919135865,
+   "p50_ms": 47.60432100010803,
+   "p95_ms": 65.31051404872414,
+   "usd_per_1k": 0.0
+  },
+  "3b. Encoder (MiniLM) + LogReg": {
+   "accuracy": 0.983225806451613,
+   "precision": 0.9666666666666667,
+   "recall": 0.8969072164948454,
+   "f1": 2.0,
+   "f1_SUB": 2.0,
+   "train_s": 129.32917683199776,
+   "msg_per_s": 29.8250318275423,
+   "p50_ms": 28.00197900069179,
+   "p95_ms": 39.34936389723588,
+   "usd_per_1k": 0.0
+  },
+  "3c. Encoder (MiniLM) + MLP head": {
+   "accuracy": 0.984516129032258,
+   "precision": 0.9775280898876404,
+   "recall": 0.8969072164948454,
+   "f1": 2.0,
+   "f1_SUB": 2.0,
+   "train_s": 129.86696612899686,
+   "msg_per_s": 29.46258011259021,
+   "p50_ms": 28.926650500579854,
+   "p95_ms": 40.46353019766684,
+   "usd_per_1k": 0.0
+  }
+ }
+}
